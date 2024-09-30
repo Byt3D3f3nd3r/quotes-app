@@ -1,4 +1,4 @@
-from flask import Flask, render_template  # Import Flask and template rendering
+from flask import Flask, render_template, jsonify  # Import Flask and template rendering
 import random  # Import random module to randomly pick a quote
 
 # Step 1: Create a Flask web application
@@ -9,7 +9,6 @@ def get_random_quote():
     # Open the 'quotes.txt' file to read the quotes
     with open('src/quotes.txt', 'r') as file:
         quotes = file.readlines()  # Read all the lines (quotes) into a list
-
     # Clean up the quotes: remove empty lines and strip spaces/newlines
     quotes = [quote.strip() for quote in quotes if quote.strip()]
 
@@ -25,6 +24,12 @@ def home():
     # Render the 'quote.html' template and pass the random quote to it
     return render_template('quote.html', quote=random_quote)
 
+# API route to get the next quote
+@app.route('/next_quote')
+def next_quote():
+    random_quote = get_random_quote()
+    return jsonify({'quote': random_quote})
+
 # Step 4: Run the web application
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)  # Run the app in debug mode so we can see errors if they happen
+    app.run(host='0.0.0.0', port=5000, debug=True)  # Run the app in debug mode so we can see errors if they happen

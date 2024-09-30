@@ -4,9 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Movie Quote</title>
+    <style>
+        /* Your CSS for hexagon and button styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: #333;
+        }
+        .quote-container {
+            width: 300px;
+            height: 260px;
+            background-color: #6c5ce7;
+            color: white;
+            position: relative;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+            transition: transform 0.3s ease-in-out;
+        }
+        .quote-container:hover {
+            transform: scale(1.1);
+        }
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #fdcb6e;
+            color: #333;
+            font-size: 1.1em;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .next-btn:hover {
+            background-color: #f0932b;
+        }
+        .hexagon {
+            transform-origin: center;
+        }
+    </style>
 </head>
 <body>
     <h1>Random Movie Quote</h1>
-    <p>{{ quote }}</p> <!-- This is where the random quote will be displayed -->
+
+    <div class="quote-container hexagon" id="quote-container">
+        <p id="quote">{{ quote }}</p>
+    </div>
+
+    <button class="next-btn" id="next-btn">Next Quote</button>
+
+    <script>
+        document.getElementById('next-btn').addEventListener('click', function() {
+            fetch('/next_quote')
+                .then(response => response.json())
+                .then(data => {
+                    const quoteContainer = document.getElementById('quote-container');
+                    const quoteText = document.getElementById('quote');
+                    
+                    // Animate the container
+                    quoteContainer.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        quoteText.textContent = data.quote;
+                        quoteContainer.style.transform = 'scale(1.1)';
+                    }, 200);
+                })
+                .catch(error => console.log(error));
+        });
+    </script>
 </body>
 </html>
