@@ -162,5 +162,3 @@ cython_debug/
 #.idea/
 
 #ignore
-vapp.py
-/templates/quote.html
