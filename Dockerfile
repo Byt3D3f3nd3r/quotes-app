@@ -1,12 +1,13 @@
 # Use an official Python runtime as a base image
 FROM python:3.9-slim
 
+# Create working directory
 WORKDIR /app-1
 
+# Copy all the files to the working directory
 COPY . /app-1
 
-#COPY app.py src/quotes.txt ./
-
+# Installs Flask 
 RUN pip install Flask
 
 # Install any needed packages specified in requirements.txt
@@ -18,7 +19,7 @@ EXPOSE 5000
 # Debug: Print the installed packages
 RUN pip freeze
 
-# Command to run the Flask app
+# Command to run the Flask app and also enable debugging
 CMD ["flask", "run", "--host=0.0.0.0", "--port=5000", "--debug"]
 
 
